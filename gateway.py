@@ -25,13 +25,13 @@ def listen_for_sensor_data(ws):
 
         # Envia para o servidor na nuvem via WebSocket
         if message["type"] == "VAGA_STATUS":
-            vaga_data = {
-                "type": "VAGA_DATA",
+            VAGA_STATUS = {
+                "type": "VAGA_STATUS",
                 "vaga_id": message["vaga_id"],
                 "status": message["status"],
                 "timestamp": "2024-10-23T15:30:00"
             }
-            send_to_server(ws, vaga_data)
+            send_to_server(ws, VAGA_STATUS)
 
 # Função para escutar os dados da câmera via TCP
 def listen_for_camera_data(ws):
@@ -52,10 +52,9 @@ def listen_for_camera_data(ws):
         # Envia os dados da câmera para o servidor na nuvem via WebSocket
         if message["type"] == "CAMERA_DATA":
             camera_data = {
-                "type": "CAMERA_FEED",
-                "camera_id": message["camera_id"],
-                "image_data": message["image_data"],  # Imagem ou dados da câmera
-                "timestamp": "2024-10-23T15:30:00"
+                "type": "PLACA_ACESSO",
+                "placa": message["placa"],
+                "timestamp": message["timestamp"],
             }
             send_to_server(ws, camera_data)
 

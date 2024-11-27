@@ -12,18 +12,18 @@ async def on_message(ws, path):
             # Lógica para processar os dados da câmera (por exemplo, análise da imagem)
             comando = None  # Inicializa a variável comando para evitar erro
 
-            if data["type"] == "CAMERA_FEED":
-                print(f"Imagem recebida da Câmera {data['camera_id']}:\n{data['image_data']}")
+            if data["type"] == "PLACA_ACESSO":
+                print(f"Imagem recebida da Câmera {data['placa']}:\n{data['timestamp']}")
 
                 # Exemplo de comando que pode ser enviado ao Smart Gateway
-                if "algum critério" in data["image_data"]:
+                if "algum critério" in data["timestamp"]:
                     comando = {
                         "type": "COMANDO_CANCELA",
                         "acao": "Fechar",
                         "cancel_id": "Cancela_1"
                     }
             # Lógica para acionar o Smart Gateway para abrir/fechar a cancela
-            if data["type"] == "VAGA_DATA":
+            if data["type"] == "VAGA_STATUS":
                 # Exemplo de comando para a cancela
                 if data["status"] == "Ocupada":
                   comando = {

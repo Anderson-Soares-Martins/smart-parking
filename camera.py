@@ -3,7 +3,7 @@ import json
 import time
 
 # Função para enviar dados da câmera para o Smart Gateway via TCP
-def send_camera_data(camera_id, image_data):
+def send_camera_data(placa, timestamp):
     # Configura o socket TCP
     camera_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     camera_socket.connect(('127.0.0.1', 6000))  # IP e porta do Smart Gateway
@@ -11,8 +11,8 @@ def send_camera_data(camera_id, image_data):
     # Mensagem com dados da câmera
     message = {
         "type": "CAMERA_DATA",
-        "camera_id": camera_id,
-        "image_data": image_data  # Pode ser uma string codificada ou um arquivo binário
+        "placa": placa,
+        "timestamp": timestamp  # Pode ser uma string codificada ou um arquivo binário
     }
 
     # Serializa a mensagem para JSON
@@ -26,5 +26,5 @@ def send_camera_data(camera_id, image_data):
 
 # Envia dados da câmera periodicamente (simulando envio de imagem)
 while True:
-    send_camera_data("Camera_1", "imagem_base64_ou_dados")
+    send_camera_data("Camera_1", "2024-10-23T15:30:00")
     time.sleep(10)  # Envia a cada 10 segundos

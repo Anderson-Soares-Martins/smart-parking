@@ -7,9 +7,15 @@ def listen_for_multicast():
     multicast_group = '224.1.1.1'
     server_address = ('', 10000)  # Porta 10000 para Multicast
     multicast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    # Permitir que vários clientes se conectem ao mesmo grupo multicast
+    multicast_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+    # Adicionar o socket ao grupo multicast
     multicast_socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP,
                                  struct.pack("4s4s", socket.inet_aton(multicast_group), socket.inet_aton('0.0.0.0')))
     multicast_socket.bind(server_address)
+
     print("Escutando comandos de Multicast...")
 
     while True:

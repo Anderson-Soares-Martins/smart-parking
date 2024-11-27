@@ -64,12 +64,8 @@ def listen_for_camera_data(ws):
 def send_to_multicast(message, multicast_group='224.1.1.1', port=10000):
     # Criação do socket UDP
     multicast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    
-    # Configura o socket para enviar para o grupo Multicast
-    multicast_socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP,
-                                 struct.pack("4s4s", socket.inet_aton(multicast_group), socket.inet_aton('0.0.0.0')))
-    
-    # Converte a mensagem para JSON
+
+    # Não é necessário adicionar o socket ao grupo, pois estamos enviando dados para o grupo
     multicast_data = json.dumps(message).encode('utf-8')
 
     # Envia a mensagem para o grupo Multicast

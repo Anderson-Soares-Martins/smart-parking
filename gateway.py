@@ -2,6 +2,7 @@ import socket
 import json
 import websocket
 import threading
+import struct
 
 # Função para enviar dados ao servidor via WebSocket
 def send_to_server(ws, message):
@@ -60,6 +61,22 @@ def listen_for_camera_data(ws):
 
         client_socket.close()
 
+# Função para enviar mensagem para o grupo Multicast
+def send_to_multicast(message, multicast_group='224.1.1.1', port=10000):
+    # Criação do socket UDP
+    multicast_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    
+    # Configura o socket para enviar para o grupo Multicast
+    multicast_socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP,
+                                 struct.pack("4s4s", socket.inet_aton(multicast_group), socket.inet_aton('0.0.0.0')))
+    
+    # Converte a mensagem para JSON
+    multicast_data = json.dumps(message).encode('utf-8')
+
+    # Envia a mensagem para o grupo Multicast
+    multicast_socket.sendto(multicast_data, (multicast_group, port))
+    print(f"Comando enviado para Multicast: {message}")
+
 # Função para escutar mensagens do servidor via WebSocket
 def listen_for_server_messages(ws):
     try:
@@ -68,6 +85,10 @@ def listen_for_server_messages(ws):
             if result:
                 message = json.loads(result)
                 print(f"Recebido do servidor: {message}")
+
+                # Envia a mensagem via Multicast
+                send_to_multicast(message)
+
     except Exception as e:
         print(f"Erro ao receber dados do servidor: {e}")
 

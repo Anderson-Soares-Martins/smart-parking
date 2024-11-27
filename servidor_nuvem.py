@@ -4,7 +4,6 @@ import json
 
 # Função que recebe os dados do Smart Gateway (incluindo os dados da câmera)
 async def on_message(ws, path):
-    print("Nova conexão WebSocket!")
     try:
         async for message in ws:
             data = json.loads(message)
@@ -42,20 +41,23 @@ async def on_message(ws, path):
             
             # Verifica se o comando foi atribuído antes de enviá-lo
             if comando:
-                send_command_to_sg(comando)
+                await send_command_to_sg(ws, comando)
             else:
                 print("Nenhum comando a ser enviado.")
 
+    except websockets.exceptions.ConnectionClosedOK:
+        print("Conexão WebSocket fechada graciosamente.")
     except Exception as e:
         print(f"Erro ao receber dados do Smart Gateway: {e}")
-    finally:
-        print("Conexão encerrada")
+    
 
 
 # Função para enviar comando para o Smart Gateway (SG)
-def send_command_to_sg(command):
+async def send_command_to_sg(ws, command):
     # Aqui você usaria o WebSocket ou outro método para enviar os comandos
-    print(f"Comando enviado para o Smart Gateway: {command}")
+    # para o Smart Gateway
+    await ws.send(json.dumps(command))
+    print(f"Enviado para o Smart Gateway: {command}")
 
 # Cria o servidor WebSocket
 async def main():

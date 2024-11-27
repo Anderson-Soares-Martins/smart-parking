@@ -16,7 +16,7 @@ async def on_message(ws, path):
                 print(f"Imagem recebida da Câmera {data['placa']}:\n{data['timestamp']}")
 
                 # Exemplo de comando que pode ser enviado ao Smart Gateway
-                if "algum critério" in data["timestamp"]:
+                if "PJE2033" in data["placa"]:
                     comando = {
                         "type": "COMANDO_CANCELA",
                         "acao": "Fechar",

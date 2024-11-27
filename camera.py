@@ -26,5 +26,5 @@ def send_camera_data(placa, timestamp):
 
 # Envia dados da câmera periodicamente (simulando envio de imagem)
 while True:
-    send_camera_data("Camera_1", "2024-10-23T15:30:00")
+    send_camera_data("PJE2033", "2024-10-23T15:30:00")
     time.sleep(10)  # Envia a cada 10 segundos
